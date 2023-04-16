@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def imgStack(factor, images: list):
+def img_stack(factor, images: list):
     for nested_list in images:
         for image in nested_list:
             cv2.resize(image, (int(image.shape[1] * factor), int(image.shape[0] * factor)))
@@ -17,7 +17,7 @@ def imgStack(factor, images: list):
     cv2.imshow("Stacked Images", stack)
 
 
-img = cv2.imread("Resources/lena.png")
+img = cv2.imread('Resources/lena.png')
 kernel = np.ones((5, 5), np.uint8)
 
 imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -28,6 +28,6 @@ imgDilation = cv2.dilate(imgCanny, kernel, iterations=4)
 imgEroded = cv2.erode(imgDilation, kernel, iterations=4)
 
 
-imgStack(0.5, [[img, imgHsv], [imgHsv, img]])
-imgStack(0.5, [[imgGray, imgDilation], [imgCanny, imgEroded]])
+# imgStack(0.5, [[img, imgHsv], [imgHsv, img]])
+img_stack(0.5, [[imgGray, imgDilation], [imgCanny, imgEroded]])
 cv2.waitKey(0)
