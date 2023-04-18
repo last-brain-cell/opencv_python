@@ -52,7 +52,7 @@ try:
         # cv2.imshow("Result", imgResult)
         h_stack = np.hstack((img, imgResult))
 
-        cv2.imshow("Image and Result", h_stack)
+        cv2.imshow("Color Detection", h_stack)
         cv2.waitKey(1)
         # stack_images(0.3, [[img, imgResult]])
 
