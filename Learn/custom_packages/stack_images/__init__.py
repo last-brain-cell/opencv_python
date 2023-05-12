@@ -1,37 +1,43 @@
 import cv2
 import numpy as np
-from math import sqrt
 
 
-def stack_images(factor: float, images: list):
-    # resize
-    count = 0
-    for row in images:
-        for image in row:
-            height = int(image.shape[1] * factor)
-            width = int(image.shape[0] * factor)
-            channels = image.shape[-1]
-            # print(channels)
-            cv2.resize(image, (height, width))
+def stack_images(factor: float, images: list) -> None:
+    def h_stack(image_list: list):
+        return np.hstack(image_list)
 
-            if channels != 3:
-                image.reshape(height, width, 1)
+    def v_stack(h_stacks: list):
+        return np.vstack(h_stacks)
 
-            count += 1
+    length = len(images)
+    assert length >= 0, 'No Images found in Input'
 
-    height = images[0][0].shape[1]
-    width = images[0][0].shape[0]
-    hstack = np.zeros((height, width))
-    hstack.reshape((height, width, 1))
-    vstack = hstack
-    in_one_row = int(sqrt(count))
-    cols = len(images)
+    for i in range(length):
+        image = images[i]
+        print(image.shape)
+        height = int(image.shape[1] * factor)
+        width = int(image.shape[0] * factor)
+        image = cv2.resize(image, (height, width))
 
-    for i in range(cols):
-        for j in range(in_one_row):
-            hstack = np.hstack((hstack, images[i][j]))
+        if len(image) == 2:
+            image = cv2.reshape(image, (height, width, 1))
+        print(image.shape)
 
-        vstack = np.vstack((vstack, hstack))
+    if length == 1:
+        h_stack = h_stack(images[0])
+        cv2.imshow("Stack", h_stack)
+        cv2.waitKey(0)
 
-    cv2.imshow("Result", vstack)
-    cv2.waitKey(1)
+    elif length > 1:
+        h_stack_list = []
+        for i in range(length):
+            h_stack_list.append(h_stack(images[i]))
+
+
+        result = v_stack(h_stack_list)
+        cv2.imshow("Stack", result)
+        cv2.waitKey(0)
+
+    else: pass
+
+    return None
