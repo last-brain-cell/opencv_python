@@ -1,8 +1,9 @@
 import numpy as np
 import tensorflow as tf
-from keras import layers, Sequential, Input
+from keras import Sequential
 from keras.datasets import mnist
 from keras.utils import to_categorical
+import datetime
 
 
 # enabling GPU growth to allocate memory on-demand
@@ -14,11 +15,9 @@ for device in physical_devices:
 if len(physical_devices) > 0:
     print("Available GPUs: " + str(physical_devices))
 
-# Model / data parameters
 num_classes = 10
 input_shape = (28, 28, 1)
 
-# Load the data and split it between train and test sets
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 # Scale images to the [0, 1] range
@@ -59,29 +58,24 @@ model = Sequential(
 )
 
 datagen = tf.keras.preprocessing.image.ImageDataGenerator(
-    rotation_range=10,  # rotate images randomly within 10 degrees
-    zoom_range=0.1,     # zoom images randomly within 10%
-    width_shift_range=0.1,  # shift images horizontally randomly within 10%
-    height_shift_range=0.1, # shift images vertically randomly within 10%
-    shear_range=0.1,    # shear images randomly within 10 degrees
-    horizontal_flip=False, # flip images horizontally randomly
-    vertical_flip=False   # flip images vertically randomly
+    rotation_range=10,
+    zoom_range=0.1,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    shear_range=0.1,
+    horizontal_flip=False,
+    vertical_flip=False
 )
 
 datagen.fit(x_train)
 
 model.summary()
 
-# batch_size = 10
-# epochs = 9
+model.compile(loss="categorical_crossentropy", optimizer='adam', metrics=["accuracy"])
 
-model.compile(loss="categorical_crossentropy", optimizer=tf.keras.optimizers.legacy.SGD(learning_rate=0.01, momentum=0.9,), metrics=["accuracy"])
-
-# model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=0.1)
 model.fit(
-    datagen.flow(x_train, y_train, batch_size=12),
-    epochs=50,
-    verbose=2,
+    datagen.flow(x_train, y_train, batch_size=10),
+    epochs=200,
 )
 
-model.save("model.h5")
+model.save("modelw.h5")

@@ -5,7 +5,8 @@ import cv2
 
 # Create a canvas component
 canvas_result = st_canvas(
-    # fill_color="rgba(255, 165, 0, 0.3)",  # Fixed fill color with some opacity
+    # fill_color="rgba(255, 165, 0, 0.3)",
+    # Fixed fill color with some opacity
     stroke_width=10,
     stroke_color='#000000',
     background_color='#EEEEEE',
@@ -16,7 +17,6 @@ canvas_result = st_canvas(
     drawing_mode='freedraw',
     key="canvas",
 )
-
 
 
 # Do something interesting with the image data and paths
@@ -40,7 +40,7 @@ if canvas_result.image_data is not None:
     prediction = model.predict(input_image)
 
     pred = prediction.argmax(axis=1)
-    conf = prediction[0,pred]
+    conf = prediction[0, pred]
     print(pred)
     print(prediction)
 

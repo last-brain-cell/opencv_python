@@ -58,14 +58,14 @@ while capture.isOpened():
     fps = 1 / (currentTime - previousTime)
     previousTime = currentTime
 
-    cv2.putText(image, str(int(fps)) + " FPS", (10, 70), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2)
+    # cv2.putText(image, str(int(fps)) + " FPS", (10, 70), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2)
 
     cv2.imshow("Facial and Hand Landmarks", image)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-    for landmark in mp_holistic.HandLandmark:
-        print(landmark.name)
+    # for landmark in mp_holistic.HandLandmark:
+        # print(landmark.name)
 
 capture.release()
 cv2.destroyAllWindows()
